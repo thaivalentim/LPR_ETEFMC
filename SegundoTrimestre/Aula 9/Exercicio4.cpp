@@ -14,7 +14,6 @@ int main() {
     double valorY;
     double somaPopulacao = 0;
     double mediaPopulacional;
-    const double epsilon = 1e-6;
     char resposta;
     string cidadeMaisPopulosa, cidadeMenosPopulosa;
     map<string, double> cidades;
@@ -39,17 +38,6 @@ int main() {
 
         cout << "Nome da " << (i + 1) << "a cidade: ";
         getline(cin, nomeCidade);
-
-        if (cidades.count(nomeCidade) > 0) {
-            cout << "Essa cidade ja foi cadastrada. Deseja sobrescrever? (s/n): ";
-            cin >> resposta;
-            cin.ignore();
-            if (resposta != 's' && resposta != 'S') {
-                cout << "Cadastro ignorado. Indo para a proxima cidade.\n" << endl;
-                continue;
-            }
-        }
-
         cout << "Populacao de " << nomeCidade << " (em milhao(oes)): ";
         cin >> populacao;
         cin.ignore();
@@ -130,12 +118,10 @@ int main() {
     cin.ignore();
     cout << endl;
 
-    for (auto it = cidades.begin(); it != cidades.end(); ) {
-        if (abs(it->second - valorY) < epsilon) {
-            cout << "A cidade " << it->first << " foi deletada do dicionario por ter populacao igual a Y." << endl;
-            it = cidades.erase(it);
-        } else {
-            ++it;
+    for (const auto& cidade : cidades) {
+        if (cidade.second == valorY) {
+            cout << "A cidade " << cidade.first << " sera deletada, conforme estabelecido acima." << endl;
+            cidades.erase(cidade.first);
         }
     }
 
